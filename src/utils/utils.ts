@@ -36,7 +36,7 @@ export function highlightKeywords(str: string): string {
 }
 
 
-const API_KEY = "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"
+const API_KEY = ""
 
 
 export const fetchData = async (input: string) => {
