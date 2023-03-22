@@ -3,13 +3,13 @@ import TextOutputContainer from "./TextOutputContainer";
 
 import { findAdjacentChineseAndEnglish, highlightKeywords } from "../utils/utils";
 
-    // 对text进行处理
-    // 1. 英文单词前后需要空格 [done]
-    // 2. 英文单词前后带标点的不用空格 [done]
-    // 3. 关键字加粗 [done]
-    // 4. 一键复制
+// 对text进行处理
+// 1. 英文单词前后需要空格 [done]
+// 2. 英文单词前后带标点的不用空格 [done]
+// 3. 关键字加粗 [done]
+// 4. 一键复制
 
-    //  2. 找出提问话术部分进行优化 3. useCallback, useMemo优化性能
+//  2. 找出提问话术部分进行优化 3. useCallback, useMemo优化性能
 
 
 interface TextOutputProps {
@@ -41,6 +41,10 @@ const TextOutput: React.FC<TextOutputProps> = ({ outputText}) => {
         }
 
         setResult(res)
+
+        if (copy) {
+            setCopy(false)
+        }
     }, [outputText])
 
     return (

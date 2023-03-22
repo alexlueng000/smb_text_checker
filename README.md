@@ -46,3 +46,4 @@ To do:
 - Reconize the code block
 - Add knowledge roadmap
 - Interact with ChatGPT
+- when the content in the left textarea changed, the copy button change
