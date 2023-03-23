@@ -27,7 +27,7 @@ const TextOutput: React.FC<TextOutputProps> = ({ outputText}) => {
         
         if (textAreaRef.current) {
             setCopy(true)
-            navigator.clipboard.writeText(textAreaRef.current.value)
+            navigator.clipboard.writeText(textAreaRef.current.value.trim())
         }
     }
 
