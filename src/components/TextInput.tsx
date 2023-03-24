@@ -13,13 +13,18 @@ const TextInput = ({ onInputChange, value }: TextInputProps) => {
     }
 
     return (
-        <div className='textInput'>
-            <h2>输入文本</h2>
-            <div className='textareaWrapper'>
-                <textarea onChange={handleInputChange} value={value} />
-            </div>
+        <div className="flex flex-col h-full">
+            <h2 className="text-lg font-bold mb-2">输入文本</h2>
+            <textarea
+                className="flex-grow focus:outline-none p-2"
+                onChange={handleInputChange}
+                value={value}
+                rows={20}
+            />
         </div>
     )
 }
 
 export default TextInput
+
+
