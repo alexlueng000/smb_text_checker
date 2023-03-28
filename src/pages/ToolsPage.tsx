@@ -1,16 +1,49 @@
 import React, {ChangeEventHandler, useState } from 'react'
 import TextInput from '../components/TextInput'
 import TextOutput from '../components/TextOutput';
+import Spinner from '../components/Spinner';
+
+const options = ['Golang', 'Deep Learning', 'Python', 'C', 'C++', 'Java', 'JavaScript', 'Swift', 'Kotlin', 'Rust', 'Go', 'SQL', 'TypeScript']
 
 function ToolsPage() {
 
   const [activeTab, setActiveTab] = useState('tab1')
   const [inputText, setInputText] = useState("");
+  const [selectOption, setSelectOption] = useState(options[0]);
+
+  const [loading, setLoading] = useState(false);
+  const [questions, setQuestions] = useState<string>("");
 
   const handleInputChange: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
     const { value = "" } = event.target || {}
     console.log(value)
     setInputText(value)
+  }
+
+  const handleGenerate = async (e: any) => {
+    e.preventDefault()
+    setLoading(true)
+
+    const question_type = {
+      question_type: selectOption
+    }
+
+    try {
+      const response = await fetch('http://127.0.0.1:8080/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(question_type)
+      })
+      const data = await response.json()
+      console.log(data)
+      setQuestions(data.result)
+      
+    } catch (err) {
+      console.log(err)
+    }
+    setLoading(false)
   }
 
 
@@ -45,21 +78,23 @@ function ToolsPage() {
           >
               选择题
           </button>
-
+          <button className={`text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none ${activeTab === "tab3" ? "text-blue-500 border-b-2 font-medium border-blue-500" : ""}`}
+          onClick={() => setActiveTab("tab3")}
+          
+          >
+              QuestionGPT
+          </button>
         </nav>
       </div>
 
       {activeTab === "tab1" && (
         <div className="bg-gray-100 py-4 px-2 flex flex-row h-screen">
-          {/* <h2 className="text-lg font-bold mb-2">Tab 1 Content</h2> */}
-          {/* <p>Here's some content for tab 1.</p> */}
           <div className='w-1/2 mr-2'>
             <TextInput onInputChange={handleInputChange} value={inputText} />
           </div>
           <div className='w-1/2 ml-2'>
             <TextOutput outputText={inputText} />
           </div>
-          
         </div>
       )}
 
@@ -69,6 +104,38 @@ function ToolsPage() {
           <p>Here's some content for tab 2.</p>
         </div>
       )}
+
+      {activeTab === "tab3" && (
+        <div className="bg-gray-100 py-4 px-2 h-screen">
+          <div  className='flex items-center justify-center'>
+            <label className='text-gray-700 text-sm font-bold mr-2' htmlFor='question'>题目类型:</label>
+            <select
+              value={selectOption}
+              onChange={(e) => setSelectOption(e.target.value)}
+            >
+              {options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <button className='text-gray-700 text-sm font-bold ml-2' onClick={handleGenerate}>生成题目</button>
+            {loading && <Spinner />}
+          </div>
+
+          <div className='flex items-center justify-center mt-2 h-full w-full'>
+                
+                <textarea 
+                  className='w-full h-full p-4 focus: outline-none' 
+                  readOnly 
+                  value={questions} onChange={(e) => setQuestions(e.target.value)}
+                > 
+                </textarea>
+          </div>
+        </div>
+        
+      )}
+
 
     </div>
     
